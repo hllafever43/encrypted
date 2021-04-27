@@ -1,7 +1,7 @@
 #***basic setup for the game***
 
 # import pygame module in this program
-import pygame, random
+import pygame, random, math
 from pygame.locals import *
   
 # initiate pygame
@@ -18,9 +18,9 @@ Y = 500
 display_surface = pygame.display.set_mode((X, Y))
   
 # set the pygame window name
-pygame.display.set_caption('Encryption')
+pygame.display.set_caption('Encrypted')
   
-#set background
+#set background (purchased from https://www.vectorstock.com/royalty-free-vector/streaming-binary-code-background-vector-22605661)
 image = pygame.image.load("background_image.png")
 image = pygame.transform.scale(image, (900, 625))
 
@@ -56,7 +56,7 @@ randnum_two = random.randint(0, 4)
 randnum_three = random.randint(0, 4)
 randnum_four = random.randint(0, 2)
 randnum_five = random.randint(0, 4)
-randnum_six = random.randint(1,25)
+randnum_six = random.randint(2,24)
 randnum_seven = random.randint(2, 24)
 
 #puzzle one
@@ -89,7 +89,7 @@ puzzle_three = list2[randnum_three][0]
 code_three = ""
 for i in answer_three:
     index = letters.index(i.upper())
-    index = (index + randnum_six) % 25
+    index = math.floor((index + 1 + randnum_six) % 26)
     code_three = code_three + letters[index]
 puzzle_three = list2[randnum_three][0] 
 
@@ -100,7 +100,7 @@ puzzle_four = list2[randnum_three][2][randnum_four][0]
 code_four = ""
 for i in answer_four:
     index = letters.index(i.upper())
-    index = (index + randnum_seven) % 25
+    index = math.floor((index + 1 + randnum_seven) % 26)
     code_four = code_four + numbers[index]
 
 #puzzle five
@@ -628,7 +628,7 @@ while True :
 
         #display top-left box that contains the exposition/notes with puzzles
         notebox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-230,320,195))
-        makeNote(display_surface, "You look " + puzzle_two + " " + answer_two + " and see another envelope. Opening it, you read: Doing great, kiddo! Let's make things a bit more complicated. You'll probably have to try it a few times but keep going until you make a word! Go to the " + code_three + " to look for the next puzzle :)" , black, notebox, smallfont)
+        makeNote(display_surface, "You look " + puzzle_two + " " + answer_two + " and see another envelope. Opening it, you read: Doing great, kiddo! Let's try a new cipher. This time YOU need to find the right key. You'll probably have to try it a few times before you get it right. Go to the " + code_three + " to look for the next puzzle :)" , black, notebox, smallfont)
 
         #display bottom box with key for the puzzle
         helpbox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-30,870,200))
@@ -650,7 +650,7 @@ while True :
             display_surface.blit(nextbutton, (X/2-345,Y/2+115))
             #if clicked, move wheel to the left
             if click[0] == 1 and nextstage == False:
-                rotate = dec_rotate(rotate)
+                rotate = inc_rotate(rotate)
                 pygame.time.wait(400)
         else:
             #normal button display when user isn't hovering on it
@@ -666,7 +666,7 @@ while True :
             display_surface.blit(nextbutton, (X/2+325,Y/2+115))
             #if clicked, move wheel to the right
             if click[0] == 1 and nextstage == False:
-                rotate = inc_rotate(rotate)
+                rotate = dec_rotate(rotate)
                 pygame.time.wait(400)
         else:
             #normal button display when user isn't hovering on it
@@ -749,7 +749,7 @@ while True :
 
         #display top-left box that contains the exposition/notes with puzzles
         notebox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-230,320,195))
-        makeNote(display_surface, "You go and find another envelope: So smart! You're almost there - now you need to look " + puzzle_four + " " + code_four + ". This one is quite tricky, but I think you'll get it", black, notebox, smallfont)
+        makeNote(display_surface, "You go and find another envelope: So smart! You're almost there - now you need to look " + puzzle_four + " " + code_four + ". This one is quite tricky, but I think you'll get it. ", black, notebox, smallfont)
 
         #display bottom box with key for the puzzle
         helpbox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-30,870,200))
@@ -769,7 +769,7 @@ while True :
             display_surface.blit(nextbutton, (X/2-345,Y/2+115))
             #if clicked, rotate cipher wheel to the left
             if click[0] == 1 and nextstage == False:
-                rotate = dec_rotate(rotate)
+                rotate = inc_rotate(rotate)
                 pygame.time.wait(400)
         else:
             #normal button display when user isn't hovering on it
@@ -785,7 +785,7 @@ while True :
             display_surface.blit(nextbutton, (X/2+325,Y/2+115))
             #if clicked, rotate cipher wheel to the left
             if click[0] == 1 and nextstage == False:
-                rotate = inc_rotate(rotate)
+                rotate = dec_rotate(rotate)
                 pygame.time.wait(400)
         else:
             #normal button display when user isn't hovering on it
@@ -870,7 +870,7 @@ while True :
 
         #display top box that contains the exposition/notes with puzzles
         notebox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-230,870,115))
-        makeNote(display_surface, "You look " + puzzle_four + " " + answer_four + " and find yet another envelope. The note inside of it says: Okay, this is the last one. It's a bit different from the others, but you can do this:" + listToString(code_five[0]) + " " +  listToString(code_five[1]) + " " +  listToString(code_five[2]) + " " +  listToString(code_five[3]) + ". Unscramble the letters to know where to go to find the prize. ", black, notebox, smallfont)
+        makeNote(display_surface, "You look " + puzzle_four + " " + answer_four + " and find yet another envelope. The note inside of it says: Okay, this is the last one. It's a bit different from the others, but you can do this: " + listToString(code_five[0]) + " " +  listToString(code_five[1]) + " " +  listToString(code_five[2]) + " " +  listToString(code_five[3]) + ". Unscramble the letters to know where to go to find the prize. ", black, notebox, smallfont)
 
         #display the bottom box with the puzzle and the attempted answers
         codebox = pygame.draw.rect(display_surface, white, (X/2-435,Y/2-110,870,285))
